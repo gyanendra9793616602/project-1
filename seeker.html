@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Upload System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .category-btn, .language-btn {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #f1f5f9;
+            cursor: pointer;
+            font-weight: 500;
+            color: #1f2937;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .category-btn:hover, .language-btn:hover {
+            background: #e0e7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .category-btn.active, .language-btn.active {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            background: #f9fafb;
+            transition: border-color 0.3s ease;
+        }
+        input[type="file"]:hover {
+            border-color: #4f46e5;
+        }
+        .submit-btn {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(to right, #3b82f6, #9333ea);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+        .submit-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+        .hidden {
+            display: none;
+        }
+        .error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-8 text-center">Upload Your Project</h1>
+        <div class="mb-6">
+            <label class="block text-sm font-semibold text-gray-800 mb-3">Project Category</label>
+            <div id="categoryButtons" class="flex flex-wrap justify-center">
+                <button class="category-btn" data-value="data_science" onclick="selectCategory('data_science')">Data Science</button>
+                <button class="category-btn" data-value="web_development" onclick="selectCategory('web_development')">Web Development</button>
+                <button class="category-btn" data-value="machine_learning" onclick="selectCategory('machine_learning')">Machine Learning</button>
+                <button class="category-btn" data-value="cybersecurity" onclick="selectCategory('cybersecurity')">Cybersecurity</button>
+                <button class="category-btn" data-value="databases" onclick="selectCategory('databases')">Databases</button>
+                <button class="category-btn" data-value="mobile_dev" onclick="selectCategory('mobile_dev')">Mobile Development</button>
+            </div>
+        </div>
+        <div id="languageSection" class="mb-6 hidden fade-in">
+            <label class="block text-sm font-semibold text-gray-800 mb-3">Programming Language</label>
+            <div id="languageButtons" class="flex flex-wrap justify-center"></div>
+        </div>
+        <div id="fileSection" class="mb-6 hidden fade-in">
+            <label class="block text-sm font-semibold text-gray-800">Upload File</label>
+            <input type="file" id="fileInput" onchange="validateFile()">
+            <p id="fileError" class="error hidden"></p>
+        </div>
+        <button id="submitBtn" class="w-full submit-btn text-white py-3 rounded-md font-semibold disabled:bg-gray-400" disabled>Upload Project</button>
+    </div>
+
+    <script>
+        const categories = {
+            data_science: [
+                { name: 'Python', extensions: ['.py'] },
+                { name: 'R', extensions: ['.r', '.R'] },
+                { name: 'Jupyter Notebook', extensions: ['.ipynb'] }
+            ],
+            web_development: [
+                { name: 'HTML', extensions: ['.html', '.htm'] },
+                { name: 'CSS', extensions: ['.css'] },
+                { name: 'JavaScript', extensions: ['.js'] },
+                { name: 'TypeScript', extensions: ['.ts'] },
+                { name: 'PHP', extensions: ['.php'] }
+            ],
+            machine_learning: [
+                { name: 'Python', extensions: ['.py'] },
+                { name: 'Jupyter Notebook', extensions: ['.ipynb'] }
+            ],
+            cybersecurity: [
+                { name: 'Python', extensions: ['.py'] },
+                { name: 'C', extensions: ['.c'] },
+                { name: 'C++', extensions: ['.cpp', '.cxx', '.cc'] },
+                { name: 'Shell Script', extensions: ['.sh'] }
+            ],
+            databases: [
+                { name: 'SQL', extensions: ['.sql'] },
+                { name: 'Python', extensions: ['.py'] }
+            ],
+            mobile_dev: [
+                { name: 'Swift', extensions: ['.swift'] },
+                { name: 'Kotlin', extensions: ['.kt'] },
+                { name: 'Java', extensions: ['.java'] },
+                { name: 'Dart', extensions: ['.dart'] }
+            ]
+        };
+
+        let selectedCategory = null;
+        let selectedLanguage = null;
+
+        function selectCategory(category) {
+            selectedCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === category);
+            });
+            updateLanguages();
+        }
+
+        function selectLanguage(languageName) {
+            const category = selectedCategory;
+            selectedLanguage = categories[category].find(lang => lang.name === languageName);
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === languageName);
+            });
+            updateFileInput();
+        }
+
+        function updateLanguages() {
+            const languageButtons = document.getElementById('languageButtons');
+            const languageSection = document.getElementById('languageSection');
+            const fileSection = document.getElementById('fileSection');
+            const submitBtn = document.getElementById('submitBtn');
+
+            languageButtons.innerHTML = '';
+            languageSection.classList.add('hidden');
+            fileSection.classList.add('hidden');
+            submitBtn.disabled = true;
+            selectedLanguage = null;
+
+            if (selectedCategory) {
+                categories[selectedCategory].forEach(lang => {
+                    const button = document.createElement('button');
+                    button.className = 'language-btn';
+                    button.dataset.value = lang.name;
+                    button.textContent = lang.name;
+                    button.onclick = () => selectLanguage(lang.name);
+                    languageButtons.appendChild(button);
+                });
+                languageSection.classList.remove('hidden');
+            }
+        }
+
+        function updateFileInput() {
+            const fileSection = document.getElementById('fileSection');
+            const fileInput = document.getElementById('fileInput');
+            const submitBtn = document.getElementById('submitBtn');
+
+            fileSection.classList.add('hidden');
+            fileInput.value = '';
+            submitBtn.disabled = true;
+
+            if (selectedLanguage) {
+                fileSection.classList.remove('hidden');
+            }
+        }
+
+        function validateFile() {
+            const fileInput = document.getElementById('fileInput');
+            const fileError = document.getElementById('fileError');
+            const submitBtn = document.getElementById('submitBtn');
+            const file = fileInput.files[0];
+
+            fileError.classList.add('hidden');
+            submitBtn.disabled = true;
+
+            if (file && selectedLanguage) {
+                const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                if (selectedLanguage.extensions.includes(fileExt)) {
+                    submitBtn.disabled = false;
+                } else {
+                    fileError.textContent = `Invalid file type. Allowed extensions: ${selectedLanguage.extensions.join(', ')}`;
+                    fileError.classList.remove('hidden');
+                }
+            }
+        }
+
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+                alert(`File ${file.name} is ready for upload!`);
+                // Here you would typically send the file to a server
+            }
+        });
+    </script>
+</body>
+</html>

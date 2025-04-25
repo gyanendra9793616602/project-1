@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-group input:focus {
+    border-color: #667eea;
+  }
+  
+  button {
+    background-color: #667eea;
+    color: #fff;
+    padding: 0.6rem;
+    border: none;
+    width: 100%;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background-color: #5a67d8;
+  }
+  
+  .status-msg {
+    margin-top: 10px;
+    color: red;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+}
+.search-container {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #dfe1e5;
+    border-radius: 24px;
+    padding: 10px 20px;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+}
+.search-bar:hover {
+    box-shadow: 0 1px 6px rgba(32,33,36,0.4);
+}
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+.search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+#qr-reader {
+    display: none;
+    margin-top: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}

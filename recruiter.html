@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .search-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .search-container:hover {
+            transform: translateY(-5px);
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 2px solid #d1d5db;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .search-bar:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+        .search-bar button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        .search-bar button:hover {
+            transform: scale(1.1);
+        }
+        #qr-reader {
+            display: none;
+            margin-top: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container fade-in">
+        <h2 class="text-2xl font-bold mb-6" style="background: linear-gradient(to right, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Scan or Search</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Paste link or scan QR code..." />
+            <button onclick="toggleQRScanner()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+            </button>
+        </div>
+        <div id="qr-reader"></div>
+    </div>
+    <script src="recruiter.js"></script>
+</body>
+</html>
